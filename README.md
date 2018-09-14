@@ -31,8 +31,8 @@ const word = 'undefined!';
 
 ### Match against boolean values in an object
 ```javascript
-<Fetch lazy url="https://api.github.com/users/easilyBaffled">
-    {({ loading, data, error, fetch }) => (
+<Fetch url="https://api.github.com/users/easilyBaffled">
+    {({ loading, fetch, data, error }) => (
         <div>
             <button onClick={fetch}>Load Data</button>
             <Switch test={{ loading, data, error }}>
@@ -40,9 +40,8 @@ const word = 'undefined!';
                     data: ({ test }) => (
                         <pre>{JSON.stringify(test.data, null, 2)}</pre>
                     ),
-                    loading: () => <h1>Loading</h1>,
-                    error: ({ test }) => <h1>{test.error.message}}</h1>,
-                    _: props => props => <h1>Not working</h1>
+                    loading: () => <h1>...Loading</h1>,
+                    error: ({ test }) => <h1>{test.error.message}</h1>
                 }}
             </Switch>
         </div>
