@@ -1,6 +1,5 @@
 import React, { Fragment } from 'react';
 import ReactDOM from 'react-dom';
-import Holen from 'holen';
 import './styles.css';
 
 console.ident = v => (console.log(v), v);
@@ -15,11 +14,6 @@ const defaultKey = '_';
 const isAMatch = test =>
     isObject(test) ? match => match in test : match => test === match;
 
-/*
-<Switch test={1}>
-        {Array.from({ length: 3 }, (_, i) => <h1 match={i}>{i}</h1>)}
-    </Switch>
-*/
 const Switch_Array = (
     { children, testFunc } // children must be elements
 ) => {
@@ -48,7 +42,9 @@ const Switch = ({ children, withFallThrough, ...props }) => {
             ? typeof children[key] === 'function'
                 ? children[key](props)
                 : React.cloneElement(children, props)
-            : React.cloneElement(children, props) || null;
+            : children[defaultKey]
+                ? React.cloneElement(children, props)
+                : null;
     }
 
     return Switch_Array({ children, testFunc: isAMatch(test) });
@@ -71,28 +67,55 @@ const App = ({ pluralizationValue }) => (
             {Array.from({ length: 9 }, (_, i) => <h1 match={i}>{i}</h1>)}
             <h1 matchDefault>Default</h1>
         </Switch>
-        <Holen lazy url="https://api.github.com/users/easilyBaffled">
-            {({ fetching, fetch, error, data }) => (
+        <Fetch lazy url="https://api.github.com/users/easilyBaffled">
+            {({ loading, fetch, data, error }) => (
                 <div>
                     <button onClick={fetch}>Load Data</button>
-                    <Switch test={{ fetching, data, error }}>
+                    <Switch test={{ loading, data, error }}>
                         {{
                             data: ({ test }) => (
-                                <pre>
-                                    Something{' '}
-                                    {JSON.stringify(test.data, null, 2)}
-                                </pre>
+                                <pre>{JSON.stringify(test.data, null, 2)}</pre>
                             ),
-                            fetching: () => <h1>Loading</h1>,
-                            error: ({ test }) => <h1>Error</h1>,
-                            _: props => props => <h1>Not working</h1>
+                            loading: () => <h1>...Loading</h1>,
+                            error: ({ test }) => <h1>{test.error.message}</h1>
                         }}
                     </Switch>
                 </div>
             )}
-        </Holen>
+        </Fetch>
     </Fragment>
 );
+
+class Fetch extends React.Component {
+    initialState = {
+        loading: false,
+        data: false,
+        error: false
+    };
+
+    state = this.initialState;
+
+    fetch = () => {
+        this.setState({ ...this.initialState, loading: true }, () =>
+            fetch(this.props.url)
+                .then(res => {
+                    if (res.ok) return res.json();
+                    return res.json().then(v => {
+                        throw v;
+                    });
+                })
+                .then(data => this.setState({ ...this.initialState, data }))
+                .catch(error => {
+                    this.setState({ ...this.initialState, error });
+                })
+        );
+    };
+
+    render() {
+        return this.props.children({ fetch: this.fetch, ...this.state });
+    }
+}
+
 // https://codepen.io/easilyBaffled/pen/YLajpX?editors=0010
 
 const rootElement = document.getElementById('root');
