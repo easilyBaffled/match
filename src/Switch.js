@@ -1,5 +1,15 @@
 import React from 'react';
-import { element, func } from 'prop-types';
+import {
+    element,
+    string,
+    number,
+    bool,
+    func,
+    oneOfType,
+    array,
+    object
+} from 'prop-types';
+
 // Pulled from lodash https://github.com/lodash/lodash/blob/4.17.10/lodash.js#L11742
 // rather than brining in the library itself
 function isObject(value) {
@@ -67,12 +77,10 @@ export const matchKeyToChild = (children, key, props) => {
 
     return typeof child === 'function'
         ? child(props)
-        : React.isValidElement(child)
-            ? React.cloneElement(child, props)
-            : null;
+        : React.cloneElement(child, props); //TODO: Add a check for a valid child
 };
 
-export default ({ children, withFallThrough, ...props }) => {
+const Switch = ({ children, ...props }) => {
     if (Array.isArray(children))
         return Switch_Array({ children, testFunc: isAMatch(props.test) });
 
@@ -86,3 +94,10 @@ export default ({ children, withFallThrough, ...props }) => {
 
     return matchKeyToChild(children, key, props);
 };
+
+Switch.propType = {
+    children: oneOfType([object, array]),
+    test: oneOfType([string, number, func, bool, object])
+};
+
+export default Switch;

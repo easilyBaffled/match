@@ -6,6 +6,8 @@
   "main": "src/index.js",
   "dependencies": {
     "coveralls": "3.0.2",
+    "enzyme": "3.6.0",
+    "enzyme-adapter-react-16": "latest",
     "prop-types": "15.6.2",
     "react": "16.5.1",
     "react-dom": "16.5.1",

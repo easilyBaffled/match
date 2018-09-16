@@ -7,7 +7,7 @@ console.ident = v => (console.log(v), v);
 
 export default () => (
     <Fragment>
-        <Switch test={console.ident(Math.round(Math.random() * 10))}>
+        <Switch test={Math.round(Math.random() * 10)}>
             {{
                 0: <h1>0</h1>,
                 1: <h1>1</h1>,
@@ -25,7 +25,7 @@ export default () => (
                 )
             }}
         </Switch>
-        <Switch test={console.ident(Math.round(Math.random() * 10))}>
+        <Switch test={Math.round(Math.random() * 10)}>
             {Array.from({ length: 9 }, (_, i) => <h1 match={i}>{i}</h1>)}
             <h1 matchDefault>Default</h1>
         </Switch>

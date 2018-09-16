@@ -1,10 +1,14 @@
-import {
+import Switch, {
     isAMatch,
     extractMatchingKey,
     matchKeyToChild,
     defaultKey
 } from './Switch';
+import { mount, configure } from 'enzyme';
 import React from 'react';
+import Adapter from 'enzyme-adapter-react-16';
+
+configure({ adapter: new Adapter() });
 
 const isAFunction = val => expect(typeof val).toBe('function');
 const isIdentity = (val, val2) => expect(val).toBe(val2);
@@ -140,7 +144,6 @@ export const matchKeyToChild = (children, key, props) => {
 // The `it...` functions don't work too well as they obfuscate where the error is coming from
 describe('matchKeyToChild', () => {
     const func = (...args) => expect(matchKeyToChild(...args));
-    const Foo = () => <h1 />;
 
     it('will return null if there is no matching key', () => {
         func({}, 'key').toBe(null);
@@ -225,5 +228,46 @@ describe('matchKeyToChild', () => {
             true,
             { text: 'something' }
         ).toEqual(<H1 text="something" />);
+    });
+});
+
+describe.only('Switch', () => {
+    const matched = testVal =>
+        mount(
+            <Switch test={testVal}>
+                {{
+                    0: <h1>0</h1>,
+                    1: <h1>1</h1>,
+                    _: <h1>Default</h1>
+                }}
+            </Switch>
+        );
+    it('matches the test prop to a key in the children object', () => {
+        expect(matched(0).contains(<h1 test={0}>0</h1>)).toBe(true);
+    });
+    it('passes test value to the matched child', () => {
+        expect(matched(1).contains(<h1 test={1}>1</h1>)).toBe(true);
+        expect(matched(1).contains(<h1>1</h1>)).toBe(false);
+    });
+    it('matches to the default if there is no match', () => {
+        expect(matched(3).contains(<h1 test={3}>Default</h1>)).toBe(true);
+        expect(matched().contains(<h1 test={undefined}>Default</h1>)).toBe(
+            true
+        );
+    });
+    it('passes all props to the matched child', () => {
+        expect(
+            mount(
+                <Switch val="val">
+                    {{
+                        _: <h1>Default</h1>
+                    }}
+                </Switch>
+            ).contains(
+                <h1 test={undefined} val="val">
+                    Default
+                </h1>
+            )
+        ).toBe(true);
     });
 });
