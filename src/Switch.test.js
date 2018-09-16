@@ -1,12 +1,9 @@
-import { isAMatch, extractMatchingKey, matchKeyToChild } from './Switch';
-
-/**
-export const isAMatch = test =>
-    isObject(test)
-        ? match => typeof match === 'function' ? match(test) : match in test // Match an object key
-        : match => typeof match === 'function' ? match(test) : match === test;
-
- */
+import {
+    isAMatch,
+    extractMatchingKey,
+    matchKeyToChild,
+    defaultKey
+} from './Switch';
 
 const isAFunction = val => expect(typeof val).toBe('function');
 const isIdentity = (val, val2) => expect(val).toBe(val2);
@@ -92,6 +89,29 @@ describe('isAMatch', () => {
             const key = 'key';
             isTrue(isAMatch({ key })(key));
             isTrue(isAMatch({ [key]: false })(key));
+        });
+    });
+});
+
+describe('extractMatchingKey', () => {
+    it('does not accept Arrays', () => {
+        expect(() => extractMatchingKey([])).toThrow();
+    });
+    describe('Object matching', () => {
+        it('will return the default key if there is no match', () => {
+            expect(extractMatchingKey({})).toBe(defaultKey);
+            expect(extractMatchingKey({ key: false })).toBe(defaultKey);
+            expect(extractMatchingKey({ key: 0 })).toBe(defaultKey);
+            expect(extractMatchingKey({ key: null })).toBe(defaultKey);
+        });
+    });
+    describe('Primative matching', () => {
+        it('null is treated as a primative', () => {
+            expect(extractMatchingKey(null)).toBe(null);
+        });
+
+        it('will return the value passed in', () => {
+            primatives.forEach(v => expect(extractMatchingKey(v)).toBe(v));
         });
     });
 });

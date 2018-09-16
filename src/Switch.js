@@ -1,4 +1,4 @@
-import React, { Fragment } from 'react';
+import React from 'react';
 import { element, func } from 'prop-types';
 // Pulled from lodash https://github.com/lodash/lodash/blob/4.17.10/lodash.js#L11742
 // rather than brining in the library itself
@@ -8,7 +8,7 @@ function isObject(value) {
 }
 
 // At somepoint this will be made to a prop that the user can set
-const defaultKey = '_';
+export const defaultKey = '_';
 
 // Prettier tries to wrap the inner ternaries in `( )` which screws up the parsing order
 // See https://stackoverflow.com/questions/48309694/why-cant-i-use-a-ternary-operator-and-arrow-function-in-this-way-in-jsx?rq=1
