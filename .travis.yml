@@ -1,8 +1,8 @@
+---
 language: node_js
 node_js:
-- 'node'
-    - 'stable'
+- node
+    - stable
 os:
-- linux
+    - linux
     - osx
-after_success: npm run test: report
