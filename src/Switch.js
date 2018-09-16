@@ -1,23 +1,25 @@
 import React, { Fragment } from 'react';
-
+import { element, func } from 'prop-types';
+// Pulled from lodash https://github.com/lodash/lodash/blob/4.17.10/lodash.js#L11742
+// rather than brining in the library itself
 function isObject(value) {
     var type = typeof value;
     return value !== null && (type === 'object' || type === 'function');
 }
 
+// At somepoint this will be made to a prop that the user can set
 const defaultKey = '_';
 
 // Prettier tries to wrap the inner ternaries in `( )` which screws up the parsing order
 // See https://stackoverflow.com/questions/48309694/why-cant-i-use-a-ternary-operator-and-arrow-function-in-this-way-in-jsx?rq=1
 // prettier-ignore
-const isAMatch = test =>
+export const isAMatch = test =>
     isObject(test)
-        ? match => typeof match === 'function' ? match(test) : match in test
+        ? match => typeof match === 'function' ? match(test) : match in test // Match an object key
         : match => typeof match === 'function' ? match(test) : match === test;
 
-const Switch_Array = (
-    { children, testFunc } // children must be elements
-) => {
+// children must be elements
+export const Switch_Array = ({ children, testFunc }) => {
     children = React.Children.toArray(children);
     const filteredChildren = children.filter(
         child =>
@@ -31,14 +33,29 @@ const Switch_Array = (
         : children.find(child => child.props.matchDefault);
 };
 
-const extractMatchingKey = test =>
-    isObject(test)
+Switch_Array.propType = {
+    children: element,
+    testFunc: func
+};
+
+/**
+ * If the test value is an object then this pulls the key of the first pair with a truthy value.
+ * This does not handle Arrays
+ * @param {bool|string|number|Object} test
+ */
+export const extractMatchingKey = test => {
+    if (Array.isArray(test))
+        throw Error(
+            `extractMatchingKey does not accept Arrays and was passed ${test}`
+        );
+    return isObject(test)
         ? Object.entries(test) // Pull out just the keys that are true
               .concat([[defaultKey, true]])
-              .filter(([key, bool]) => bool)[0][0]
+              .find(([key, bool]) => bool)[0] // [0] without a safety check is ok since at the very least the default will match
         : test;
+};
 
-const matchKeyToChild = (children, key, props) => {
+export const matchKeyToChild = (children, key, props) => {
     const child = key in children ? children[key] : children[defaultKey];
 
     if (!child) return null; // No need to move forward if there was no match and no default
