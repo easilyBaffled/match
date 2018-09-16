@@ -5,6 +5,7 @@
   "keywords": [],
   "main": "src/index.js",
   "dependencies": {
+    "coveralls": "3.0.2",
     "react": "16.4.2",
     "react-dom": "16.4.2",
     "react-scripts": "1.1.4"
@@ -14,6 +15,7 @@
     "start": "react-scripts start",
     "build": "react-scripts build",
     "test": "react-scripts test --env=jsdom",
+    "test:report": "react-scripts test --env=jsdom --coverage | coveralls",
     "eject": "react-scripts eject"
   }
 }

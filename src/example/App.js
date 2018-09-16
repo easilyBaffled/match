@@ -3,6 +3,8 @@ import Switch from '../Switch';
 
 import Fetch from './Fetch';
 
+console.ident = v => (console.log(v), v);
+
 export default () => (
     <Fragment>
         <Switch test={Math.round(Math.random() * 10)} word="word">
