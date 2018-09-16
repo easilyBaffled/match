@@ -7,9 +7,9 @@
   "dependencies": {
     "coveralls": "3.0.2",
     "prop-types": "15.6.2",
-    "react": "16.4.2",
-    "react-dom": "16.4.2",
-    "react-scripts": "1.1.4"
+    "react": "16.5.1",
+    "react-dom": "16.5.1",
+    "react-scripts": "1.1.5"
   },
   "devDependencies": {},
   "scripts": {
