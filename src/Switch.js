@@ -56,18 +56,30 @@ export const extractMatchingKey = test => {
 };
 
 export const matchKeyToChild = (children, key, props) => {
+    if (!isObject(children))
+        throw Error(
+            `Switch's children must be either an Object or Array instead it recived ${typeof children}`
+        );
+
     const child = key in children ? children[key] : children[defaultKey];
 
     if (!child) return null; // No need to move forward if there was no match and no default
 
     return typeof child === 'function'
         ? child(props)
-        : React.cloneElement(child, props);
+        : React.isValidElement(child)
+            ? React.cloneElement(child, props)
+            : null;
 };
 
 export default ({ children, withFallThrough, ...props }) => {
     if (Array.isArray(children))
         return Switch_Array({ children, testFunc: isAMatch(props.test) });
+
+    if (!isObject(children))
+        throw Error(
+            `Switch's children must be either an Object or Array instead it recived ${typeof children}`
+        );
 
     const { test } = props; // test is pulled out here so that it's still a part of props that are passed to the child
     const key = extractMatchingKey(test);

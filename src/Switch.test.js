@@ -4,6 +4,7 @@ import {
     matchKeyToChild,
     defaultKey
 } from './Switch';
+import React from 'react';
 
 const isAFunction = val => expect(typeof val).toBe('function');
 const isIdentity = (val, val2) => expect(val).toBe(val2);
@@ -113,5 +114,116 @@ describe('extractMatchingKey', () => {
         it('will return the value passed in', () => {
             primatives.forEach(v => expect(extractMatchingKey(v)).toBe(v));
         });
+    });
+});
+
+/*
+export const matchKeyToChild = (children, key, props) => {
+    if (!isObject(children))
+        throw Error(
+            `Switch's children must be either an Object or Array instead it recived ${typeof children}`
+        );
+
+    const child = key in children ? children[key] : children[defaultKey];
+
+    if (!child) return null; // No need to move forward if there was no match and no default
+
+    return typeof child === 'function'
+        ? child(props)
+        : React.isValidElement(child)
+            ? React.cloneElement(child, props)
+            : null;
+};
+*/
+
+// Trying out new matching system to make it easier to read
+// The `it...` functions don't work too well as they obfuscate where the error is coming from
+describe('matchKeyToChild', () => {
+    const func = (...args) => expect(matchKeyToChild(...args));
+    const Foo = () => <h1 />;
+
+    it('will return null if there is no matching key', () => {
+        func({}, 'key').toBe(null);
+        func({ notKey: true }, 'key').toBe(null);
+    });
+
+    it("will return null if the matching value isn't a valid React Element", () => {
+        expect(React.isValidElement(1)).toBe(false);
+        func({ key: 1 }, 'key').toBe(null);
+        expect(React.isValidElement('h1')).toBe(false);
+        func({ key: 'h1' }, 'key').toBe(null);
+    });
+
+    it('will throw an error if children is not an Object', () => {
+        primatives.forEach(v => {
+            expect(() => matchKeyToChild(v)).toThrow();
+        });
+    });
+
+    it('will use the defaultKey if there are no other matches', () => {
+        func({
+            [defaultKey]: <h1 />
+        }).toEqual(<h1 />);
+        func({
+            true: () => false,
+            defaultKey: () => false,
+            [defaultKey]: <h1 />
+        }).toEqual(<h1 />);
+    });
+
+    it('will match to the first key it can find', () => {
+        func(
+            {
+                true: () => <h1 />,
+                1: () => false,
+                [defaultKey]: false
+            },
+            true
+        ).toEqual(<h1 />);
+    });
+
+    it('will call the matching value as a function if it is a function', () => {
+        const spy = jest.fn(() => true);
+        matchKeyToChild(
+            {
+                true: spy,
+                [defaultKey]: <h1 />
+            },
+            true
+        );
+        expect(spy).toHaveBeenCalled();
+    });
+
+    it('will pass props to the called function', () => {
+        func(
+            {
+                true: v => v,
+                [defaultKey]: <h1 />
+            },
+            true,
+            'value'
+        ).toBe('value');
+    });
+
+    it('will clone a new element if the matching value was an element', () => {
+        const spy = jest.fn(() => true);
+        func(
+            {
+                [defaultKey]: <h1 />
+            },
+            true
+        ).toEqual(<h1 />);
+    });
+
+    it('will pass props to the cloned element', () => {
+        const H1 = () => <h1 />;
+        const initalEl = <H1 />;
+        func(
+            {
+                [defaultKey]: initalEl
+            },
+            true,
+            { text: 'something' }
+        ).toEqual(<H1 text="something" />);
     });
 });

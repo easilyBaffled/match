@@ -7,6 +7,13 @@ console.ident = v => (console.log(v), v);
 
 export default () => (
     <Fragment>
+        <Switch test={console.ident(Math.round(Math.random() * 10))}>
+            {{
+                0: <h1>0</h1>,
+                1: <h1>1</h1>,
+                _: <h1>Default</h1>
+            }}
+        </Switch>
         <Switch test={Math.round(Math.random() * 10)} word="word">
             {{
                 0: ({ word }) => <h1>No {word}s</h1>,
