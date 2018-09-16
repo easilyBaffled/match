@@ -6,53 +6,65 @@ console.ident = v => (console.log(v), v);
 
 function isObject(value) {
     var type = typeof value;
-    return value != null && (type === 'object' || type === 'function');
+    return value !== null && (type === 'object' || type === 'function');
 }
 
 const defaultKey = '_';
 
+// Prettier tries to wrap the inner ternaries in `( )` which screws up the parsing order
+// See https://stackoverflow.com/questions/48309694/why-cant-i-use-a-ternary-operator-and-arrow-function-in-this-way-in-jsx?rq=1
+// prettier-ignore
 const isAMatch = test =>
-    isObject(test) ? match => match in test : match => test === match;
+    isObject(test) 
+        ? match => typeof match === 'function' ? match(test) : match in test
+        : match => typeof match === 'function' ? match(test) : match === test;
 
 const Switch_Array = (
     { children, testFunc } // children must be elements
 ) => {
-    const filteredChildren = React.Children.toArray(children).filter(
+    children = React.Children.toArray(children);
+    const filteredChildren = children.filter(
         child =>
             React.isValidElement(child) &&
             child.props.match &&
             testFunc(child.props.match)
     );
+
     return filteredChildren.length
         ? filteredChildren
-        : React.Children.toArray(children).find(
-              child => child.props.matchDefault
-          );
+        : children.find(child => child.props.matchDefault);
 };
+
+const extractMatchingKey = test =>
+    isObject(test)
+        ? Object.entries(test) // Pull out just the keys that are true
+              .concat([[defaultKey, true]])
+              .filter(([key, bool]) => bool)[0][0]
+        : test;
+
+const matchKeyToChild = (children, key, props) => {
+    const child = key in children ? children[key] : children[defaultKey];
+
+    if (!child) return null; // No need to move forward if there was no match and no default
+
+    return typeof child === 'function'
+        ? child(props)
+        : React.cloneElement(child, props);
+};
+
 const Switch = ({ children, withFallThrough, ...props }) => {
-    if (!Array.isArray(children)) {
-        const { test } = props; // test is pulled out here so that it's still a part of props that are passed to the child
-        const key = isObject(test)
-            ? Object.entries(test) // Pull out just the keys that are true
-                  .concat([[defaultKey, true]])
-                  .filter(([key, bool]) => bool)[0][0]
-            : test;
+    if (Array.isArray(children))
+        return Switch_Array({ children, testFunc: isAMatch(props.test) });
 
-        return key in children
-            ? typeof children[key] === 'function'
-                ? children[key](props)
-                : React.cloneElement(children, props)
-            : children[defaultKey]
-                ? React.cloneElement(children, props)
-                : null;
-    }
+    const { test } = props; // test is pulled out here so that it's still a part of props that are passed to the child
+    const key = extractMatchingKey(test);
 
-    return Switch_Array({ children, testFunc: isAMatch(test) });
+    return matchKeyToChild(children, key, props);
 };
 
-const App = ({ pluralizationValue }) => (
+const App = () => (
     <Fragment>
-        <Switch test={pluralizationValue} word="word">
+        <Switch test={Math.round(Math.random() * 10)} word="word">
             {{
                 0: ({ word }) => <h1>No {word}s</h1>,
                 1: ({ word }) => <h1>One {word}</h1>,
@@ -119,4 +131,4 @@ class Fetch extends React.Component {
 // https://codepen.io/easilyBaffled/pen/YLajpX?editors=0010
 
 const rootElement = document.getElementById('root');
-ReactDOM.render(<App pluralizationValue={0} />, rootElement);
+ReactDOM.render(<App />, rootElement);
