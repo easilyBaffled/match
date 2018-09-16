@@ -1,3 +1,5 @@
+[![Build Status](https://travis-ci.org/easilyBaffled/switch-component.svg?branch=master)](https://travis-ci.org/easilyBaffled/switch-component)
+
 # Switch Component
 A React component that resembles the `switch` case, if you squint a bit.
 Use this component to remove some of those ugly but necessary ternary operators in your code.
