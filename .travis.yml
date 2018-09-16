@@ -6,4 +6,4 @@ node_js:
 os:
     - linux
     - osx
-after_success: npm run test: report
+after_success: npm run test:report
