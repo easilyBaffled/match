@@ -53,15 +53,17 @@ Switch_Array.propType = {
  * This does not handle Arrays
  * @param {bool|string|number|Object} test
  */
-export const extractMatchingKey = test => {
+export const extractMatchingKey = (test, children) => {
     if (Array.isArray(test))
         throw Error(
             `extractMatchingKey does not accept Arrays and was passed ${test}`
         );
+    console.log(test, children);
     return isObject(test)
-        ? Object.entries(test) // Pull out just the keys that are true
-              .concat([[defaultKey, true]])
-              .find(([key, bool]) => bool)[0] // [0] without a safety check is ok since at the very least the default will match
+        ? (Object.entries(test) // Pull out just the keys that are true
+              .find(([key, bool]) => bool && key in children) || [
+              defaultKey
+          ])[0] // [0] without a safety check is ok since at the very least the default will match
         : test;
 };
 
@@ -74,7 +76,7 @@ export const matchKeyToChild = (children, key, props) => {
     const child = key in children ? children[key] : children[defaultKey];
 
     if (!child) return null; // No need to move forward if there was no match and no default
-
+    console.log({ child });
     return typeof child === 'function'
         ? child(props)
         : React.cloneElement(child, props); //TODO: Add a check for a valid child
@@ -90,7 +92,7 @@ const Switch = ({ children, ...props }) => {
         );
 
     const { test } = props; // test is pulled out here so that it's still a part of props that are passed to the child
-    const key = extractMatchingKey(test);
+    const key = extractMatchingKey(test, children);
 
     return matchKeyToChild(children, key, props);
 };
