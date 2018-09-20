@@ -76,7 +76,7 @@ export const matchKeyToChild = (children, key, props) => {
     const child = key in children ? children[key] : children[defaultKey];
 
     if (!child) return null; // No need to move forward if there was no match and no default
-
+    console.log({ child });
     return typeof child === 'function'
         ? child(props)
         : React.cloneElement(child, props); //TODO: Add a check for a valid child

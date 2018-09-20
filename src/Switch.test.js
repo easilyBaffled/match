@@ -121,25 +121,6 @@ describe('extractMatchingKey', () => {
     });
 });
 
-/*
-export const matchKeyToChild = (children, key, props) => {
-    if (!isObject(children))
-        throw Error(
-            `Switch's children must be either an Object or Array instead it recived ${typeof children}`
-        );
-
-    const child = key in children ? children[key] : children[defaultKey];
-
-    if (!child) return null; // No need to move forward if there was no match and no default
-
-    return typeof child === 'function'
-        ? child(props)
-        : React.isValidElement(child)
-            ? React.cloneElement(child, props)
-            : null;
-};
-*/
-
 // Trying out new matching system to make it easier to read
 // The `it...` functions don't work too well as they obfuscate where the error is coming from
 describe('matchKeyToChild', () => {
@@ -148,13 +129,6 @@ describe('matchKeyToChild', () => {
     it('will return null if there is no matching key', () => {
         func({}, 'key').toBe(null);
         func({ notKey: true }, 'key').toBe(null);
-    });
-
-    it("will return null if the matching value isn't a valid React Element", () => {
-        expect(React.isValidElement(1)).toBe(false);
-        func({ key: 1 }, 'key').toBe(null);
-        expect(React.isValidElement('h1')).toBe(false);
-        func({ key: 'h1' }, 'key').toBe(null);
     });
 
     it('will throw an error if children is not an Object', () => {
@@ -231,7 +205,7 @@ describe('matchKeyToChild', () => {
     });
 });
 
-describe.only('Switch', () => {
+describe('Switch', () => {
     const matched = testVal =>
         mount(
             <Switch test={testVal}>
