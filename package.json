@@ -5,6 +5,7 @@
   "keywords": [],
   "main": "src/index.js",
   "dependencies": {
+    "@storybook/react": "3.4.11",
     "coveralls": "3.0.2",
     "enzyme": "3.6.0",
     "enzyme-adapter-react-16": "latest",
