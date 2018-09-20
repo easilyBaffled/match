@@ -5,21 +5,24 @@
   "keywords": [],
   "main": "src/index.js",
   "dependencies": {
-    "@storybook/react": "3.4.11",
+    "prop-types": "15.6.2",
+    "react": "16.5.2",
+    "react-dom": "16.5.2"
+  },
+  "devDependencies": {
+    "babel-core": "^6.26.3",
     "coveralls": "3.0.2",
     "enzyme": "3.6.0",
     "enzyme-adapter-react-16": "latest",
-    "prop-types": "15.6.2",
-    "react": "16.5.2",
-    "react-dom": "16.5.2",
+    "@storybook/react": "3.4.11",
     "react-scripts": "1.1.5"
   },
-  "devDependencies": {},
   "scripts": {
     "start": "react-scripts start",
     "build": "react-scripts build",
     "test": "react-scripts test --env=jsdom",
     "test:report": "react-scripts test --env=jsdom --coverage | coveralls",
-    "eject": "react-scripts eject"
+    "eject": "react-scripts eject",
+    "storybook": "start-storybook -p 9001 -c .storybook"
   }
 }
