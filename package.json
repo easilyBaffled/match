@@ -5,16 +5,17 @@
   "keywords": [],
   "main": "src/index.js",
   "dependencies": {
+    "common-tags": "^1.8.0",
     "prop-types": "15.6.2",
     "react": "16.5.2",
     "react-dom": "16.5.2"
   },
   "devDependencies": {
+    "@storybook/react": "3.4.11",
     "babel-core": "^6.26.3",
     "coveralls": "3.0.2",
     "enzyme": "3.6.0",
     "enzyme-adapter-react-16": "latest",
-    "@storybook/react": "3.4.11",
     "react-scripts": "1.1.5"
   },
   "scripts": {
