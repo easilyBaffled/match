@@ -1,9 +1,9 @@
-import Switch, {
+import Match, {
     isAMatch,
     extractMatchingKey,
     matchKeyToChild,
     defaultKey
-} from './Switch';
+} from './Match';
 import { mount, configure } from 'enzyme';
 import React from 'react';
 import Adapter from 'enzyme-adapter-react-16';
@@ -205,16 +205,16 @@ describe('matchKeyToChild', () => {
     });
 });
 
-describe('Switch', () => {
+describe('Match', () => {
     const matched = testVal =>
         mount(
-            <Switch test={testVal}>
+            <Match test={testVal}>
                 {{
                     0: <h1>0</h1>,
                     1: <h1>1</h1>,
                     _: <h1>Default</h1>
                 }}
-            </Switch>
+            </Match>
         );
     it('matches the test prop to a key in the children object', () => {
         expect(matched(0).contains(<h1 test={0}>0</h1>)).toBe(true);
@@ -232,11 +232,11 @@ describe('Switch', () => {
     it('passes all props to the matched child', () => {
         expect(
             mount(
-                <Switch val="val">
+                <Match val="val">
                     {{
                         _: <h1>Default</h1>
                     }}
-                </Switch>
+                </Match>
             ).contains(
                 <h1 test={undefined} val="val">
                     Default

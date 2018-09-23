@@ -29,7 +29,7 @@ export const isAMatch = test =>
         : match => typeof match === 'function' ? match(test) : match === test;
 
 // children must be elements
-export const Switch_Array = ({ children, testFunc }) => {
+export const Match_Array = ({ children, testFunc }) => {
     children = React.Children.toArray(children);
     const filteredChildren = children.filter(
         child =>
@@ -43,7 +43,7 @@ export const Switch_Array = ({ children, testFunc }) => {
         : children.find(child => child.props.matchDefault);
 };
 
-Switch_Array.propType = {
+Match_Array.propType = {
     children: element,
     testFunc: func
 };
@@ -70,7 +70,7 @@ export const extractMatchingKey = (test, children) => {
 export const matchKeyToChild = (children, key, props) => {
     if (!isObject(children))
         throw Error(
-            `Switch's children must be either an Object or Array instead it recived ${typeof children}`
+            `Match's children must be either an Object or Array instead it recived ${typeof children}`
         );
 
     const child = key in children ? children[key] : children[defaultKey];
@@ -82,13 +82,13 @@ export const matchKeyToChild = (children, key, props) => {
         : React.cloneElement(child, props); //TODO: Add a check for a valid child
 };
 
-const Switch = ({ children, ...props }) => {
+const Match = ({ children, ...props }) => {
     if (Array.isArray(children))
-        return Switch_Array({ children, testFunc: isAMatch(props.test) });
+        return Match_Array({ children, testFunc: isAMatch(props.test) });
 
     if (!isObject(children))
         throw Error(
-            `Switch's children must be either an Object or Array instead it recived ${typeof children}`
+            `Match's children must be either an Object or Array instead it recived ${typeof children}`
         );
 
     const { test } = props; // test is pulled out here so that it's still a part of props that are passed to the child
@@ -97,9 +97,9 @@ const Switch = ({ children, ...props }) => {
     return matchKeyToChild(children, key, props);
 };
 
-Switch.propType = {
+Match.propType = {
     children: oneOfType([object, array]),
     test: oneOfType([string, number, func, bool, object])
 };
 
-export default Switch;
+export default Match;
