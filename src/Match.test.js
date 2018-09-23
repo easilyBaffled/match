@@ -1,8 +1,5 @@
 import Match, {
     isAMatch,
-    extractMatchingKey,
-    matchKeyToChild,
-    defaultKey
 } from './Match';
 import { mount, configure } from 'enzyme';
 import React from 'react';
@@ -95,113 +92,6 @@ describe('isAMatch', () => {
             isTrue(isAMatch({ key })(key));
             isTrue(isAMatch({ [key]: false })(key));
         });
-    });
-});
-
-describe('extractMatchingKey', () => {
-    it('does not accept Arrays', () => {
-        expect(() => extractMatchingKey([])).toThrow();
-    });
-    describe('Object matching', () => {
-        it('will return the default key if there is no match', () => {
-            expect(extractMatchingKey({})).toBe(defaultKey);
-            expect(extractMatchingKey({ key: false })).toBe(defaultKey);
-            expect(extractMatchingKey({ key: 0 })).toBe(defaultKey);
-            expect(extractMatchingKey({ key: null })).toBe(defaultKey);
-        });
-    });
-    describe('Primative matching', () => {
-        it('null is treated as a primative', () => {
-            expect(extractMatchingKey(null)).toBe(null);
-        });
-
-        it('will return the value passed in', () => {
-            primatives.forEach(v => expect(extractMatchingKey(v)).toBe(v));
-        });
-    });
-});
-
-// Trying out new matching system to make it easier to read
-// The `it...` functions don't work too well as they obfuscate where the error is coming from
-describe('matchKeyToChild', () => {
-    const func = (...args) => expect(matchKeyToChild(...args));
-
-    it('will return null if there is no matching key', () => {
-        func({}, 'key').toBe(null);
-        func({ notKey: true }, 'key').toBe(null);
-    });
-
-    it('will throw an error if children is not an Object', () => {
-        primatives.forEach(v => {
-            expect(() => matchKeyToChild(v)).toThrow();
-        });
-    });
-
-    it('will use the defaultKey if there are no other matches', () => {
-        func({
-            [defaultKey]: <h1 />
-        }).toEqual(<h1 />);
-        func({
-            true: () => false,
-            defaultKey: () => false,
-            [defaultKey]: <h1 />
-        }).toEqual(<h1 />);
-    });
-
-    it('will match to the first key it can find', () => {
-        func(
-            {
-                true: () => <h1 />,
-                1: () => false,
-                [defaultKey]: false
-            },
-            true
-        ).toEqual(<h1 />);
-    });
-
-    it('will call the matching value as a function if it is a function', () => {
-        const spy = jest.fn(() => true);
-        matchKeyToChild(
-            {
-                true: spy,
-                [defaultKey]: <h1 />
-            },
-            true
-        );
-        expect(spy).toHaveBeenCalled();
-    });
-
-    it('will pass props to the called function', () => {
-        func(
-            {
-                true: v => v,
-                [defaultKey]: <h1 />
-            },
-            true,
-            'value'
-        ).toBe('value');
-    });
-
-    it('will clone a new element if the matching value was an element', () => {
-        const spy = jest.fn(() => true);
-        func(
-            {
-                [defaultKey]: <h1 />
-            },
-            true
-        ).toEqual(<h1 />);
-    });
-
-    it('will pass props to the cloned element', () => {
-        const H1 = () => <h1 />;
-        const initalEl = <H1 />;
-        func(
-            {
-                [defaultKey]: initalEl
-            },
-            true,
-            { text: 'something' }
-        ).toEqual(<H1 text="something" />);
     });
 });
 
