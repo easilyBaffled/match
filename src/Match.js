@@ -10,6 +10,8 @@ import {
     object
 } from 'prop-types';
 
+import _match from './';
+
 // Pulled from lodash https://github.com/lodash/lodash/blob/4.17.10/lodash.js#L11742
 // rather than brining in the library itself
 function isObject(value) {
@@ -48,53 +50,19 @@ Match_Array.propType = {
     testFunc: func
 };
 
-/**
- * If the test value is an object then this pulls the key of the first pair with a truthy value.
- * This does not handle Arrays
- * @param {bool|string|number|Object} test
- */
-export const extractMatchingKey = (test, children) => {
-    if (Array.isArray(test))
-        throw Error(
-            `extractMatchingKey does not accept Arrays and was passed ${test}`
-        );
-    console.log(test, children);
-    return isObject(test)
-        ? (Object.entries(test) // Pull out just the keys that are true
-              .find(([key, bool]) => bool && key in children) || [
-              defaultKey
-          ])[0] // [0] without a safety check is ok since at the very least the default will match
-        : test;
-};
+const Match = ({ children, defaultKey = '_', matchAll = false, ...props }) => {
+    // keep test in props so that it can ( easily ) be passed to the rendered component
 
-export const matchKeyToChild = (children, key, props) => {
-    if (!isObject(children))
-        throw Error(
-            `Match's children must be either an Object or Array instead it recived ${typeof children}`
-        );
-
-    const child = key in children ? children[key] : children[defaultKey];
-
-    if (!child) return null; // No need to move forward if there was no match and no default
-    console.log({ child });
-    return typeof child === 'function'
-        ? child(props)
-        : React.cloneElement(child, props); //TODO: Add a check for a valid child
-};
-
-const Match = ({ children, ...props }) => {
     if (Array.isArray(children))
         return Match_Array({ children, testFunc: isAMatch(props.test) });
 
-    if (!isObject(children))
-        throw Error(
-            `Match's children must be either an Object or Array instead it recived ${typeof children}`
-        );
+    const matchingValue = _match( children, defaultKey )( props.test, matchAll );
 
-    const { test } = props; // test is pulled out here so that it's still a part of props that are passed to the child
-    const key = extractMatchingKey(test, children);
+    if (!matchingValue) return matchingValue;
 
-    return matchKeyToChild(children, key, props);
+    return typeof matchingValue === 'function'
+        ? matchingValue(props)
+        : React.cloneElement(matchingValue, props);
 };
 
 Match.propType = {
