@@ -6,6 +6,8 @@
 A (very) basic pattern matching-like function posing as a React component. 
 This module is meant as a tidy replacement for the ugly but often necessary ternary operators. 
 
+While this was inspired by pattern matching ( check out the [propsal for JS](https://github.com/tc39/proposal-pattern-matching) ) 
+
 It matches a test value to a simple key value. Simple in that the key must be a valid key in a object, so a primitive.  
 
 ### Match against primatives
