@@ -9,7 +9,8 @@
     "jasmine-check": "^1.0.0-rc.0",
     "prop-types": "15.6.2",
     "react": "16.5.2",
-    "react-dom": "16.5.2"
+    "react-dom": "16.5.2",
+    "watchman": "^1.0.0"
   },
   "devDependencies": {
     "@storybook/react": "3.4.11",
@@ -17,7 +18,8 @@
     "coveralls": "3.0.2",
     "enzyme": "3.6.0",
     "enzyme-adapter-react-16": "latest",
-    "react-scripts": "1.1.5"
+    "react-scripts": "1.1.5",
+    "testcheck": "^1.0.0-rc.2"
   },
   "scripts": {
     "start": "react-scripts start",
