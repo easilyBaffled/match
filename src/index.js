@@ -23,7 +23,14 @@ export const extractMatchingKeys = ( testExpression, matchClauses = {} ) =>
             .filter(([key, bool]) => !!bool && key in matchClauses)
             .map( v => v[ 0 ] )
         : testExpression;
-
+/**
+ *
+ * @param {Array|String} matchingKeys - an array of non-empty primitives
+ * @param {Object} matchClauses - and object who's keys are a superset of the matchingkeys
+ * @param {String} defaultKey - a single string
+ * @param {boolean} matchAll - true|false
+ * @returns {[*]|any|null} - null or a single item or subset of the values in matchClauses
+ */
 export const getMatchedValues = ( matchingKeys, matchClauses, defaultKey, matchAll = false ) =>
     matchAll
         ? matchingKeys
@@ -36,6 +43,7 @@ export const getMatchedValues = ( matchingKeys, matchClauses, defaultKey, matchA
             : defaultKey in matchClauses
                 ? matchClauses[ defaultKey ]
                 : null;
+
 const match_array = () => [];
 
 export default ( matchClauses, defaultKey = '_' ) => {
