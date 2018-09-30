@@ -1,5 +1,5 @@
 {
-	"name": "match",
+	"name": "match-by",
 	"version": "0.0.0",
 	"description": "Somewhere between pattern matching and a ternary",
 	"license": "MIT",
@@ -14,7 +14,8 @@
 	"scripts": {
 		"test": "jest",
 		"test:watch": "jest --watch",
-		"test:coverage": "jest --coverage"
+		"test:coverage": "jest --coverage",
+        "test:report": "jest --coverage | coveralls"
 	},
 	"files": [
 		"index.js"
@@ -22,18 +23,15 @@
 	"keywords": [
 		""
 	],
-	"dependencies": {
-		"jest": "^23.6.0",
-		"testcheck": "^1.0.0-rc.2"
-	},
+	"dependencies": {},
 	"devDependencies": {
 		"@babel/core": "^7.1.2",
 		"@babel/preset-env": "^7.1.0",
-		"ava": "^0.25.0",
 		"babel-core": "^7.0.0-bridge.0",
 		"babel-jest": "^23.6.0",
-		"esm": "^3.0.84",
+		"coveralls": "^3.0.2",
+		"jest": "^23.6.0",
 		"regenerator-runtime": "^0.12.1",
-		"xo": "^0.21.0"
+		"testcheck": "^1.0.0-rc.2"
 	}
 }
