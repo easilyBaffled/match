@@ -1,14 +1,4 @@
-// import React from 'react';
-// import ReactDOM from 'react-dom';
-// import './styles.css';
-// import App from './example/App';
-//
-// console.ident = v => (console.log(v), v);
-//
-// const rootElement = document.getElementById('root');
-// ReactDOM.render(<App />, rootElement);
-
-console.ident = ( v, label = '' ) => ( console.log( label, v ), v );
+// console.ident = ( v, label = '' ) => ( console.log( label, v ), v );
 
 // Pulled from lodash https://github.com/lodash/lodash/blob/4.17.10/lodash.js#L11742
 // rather than brining in the library itself
