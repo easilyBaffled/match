@@ -3,8 +3,6 @@
 [![Greenkeeper badge](https://badges.greenkeeper.io/easilyBaffled/switch-component.svg)](https://greenkeeper.io/)
 [![Codacy Badge](https://api.codacy.com/project/badge/Grade/7ed423c34981427a9e6d5cb6d9dfbb97)](https://www.codacy.com/app/easilyBaffled/match?utm_source=github.com&amp;utm_medium=referral&amp;utm_content=easilyBaffled/match&amp;utm_campaign=Badge_Grade)
 
-# Match
-
 <p align="center">
     <img alt="match-by" src="match-by.svg" width="144">
 </p>
