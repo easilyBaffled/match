@@ -31,8 +31,8 @@ match( {
     string: () => <p>"Hi"</p>,
 }, word )
 ```
+> <p>1</p>
 
-<code><p>1<p></code>
 
 
 ### Include default values against primatives
@@ -46,7 +46,7 @@ match( {
     _: () => <p>None of the above</p>
 }, word )
 ```
-<code><p>None of the above</p></code>
+> <p>None of the above</p>
 
 
 ### Match against boolean values in an object
