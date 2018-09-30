@@ -1,3 +1,4 @@
+[![Codacy Badge](https://api.codacy.com/project/badge/Grade/0af90d11132343da96e6792d1d2ac908)](https://app.codacy.com/app/easilyBaffled/match?utm_source=github.com&utm_medium=referral&utm_content=easilyBaffled/match&utm_campaign=Badge_Grade_Dashboard)
 [![Build Status](https://travis-ci.org/easilyBaffled/switch-component.svg?branch=master)](https://travis-ci.org/easilyBaffled/switch-component)
 [![Coverage Status](https://coveralls.io/repos/github/easilyBaffled/switch-component/badge.svg?branch=master)](https://coveralls.io/github/easilyBaffled/switch-component?branch=master) 
 [![Greenkeeper badge](https://badges.greenkeeper.io/easilyBaffled/switch-component.svg)](https://greenkeeper.io/)
