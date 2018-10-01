@@ -343,8 +343,8 @@ test( 'getVectorLength', () => {
 		y: ( { x, y } ) => Math.sqrt(x ** 2 + y ** 2 ),
 		_: vector => vector.length
 	} );
-console.log( getVectorLength( { x: 1, y: 1, z: 1 } ) )
-	// expect( getVectorLength({x: 1, y: 2, z: 3}) ).toBe( 3.74165 );
+
+	expect( getVectorLength({x: 1, y: 2, z: 3}) ).toBe( 3.7416573867739413 );
 } );
 /*
 test( 'Reducer Example', () => { // Taken from https://redux.js.org/basics/reducers#splitting-reducers

@@ -9,8 +9,8 @@ function isObject(value) {
 
 export const extractMatchingKeys = ( testExpression, matchClauses = {} ) =>
 	isObject(testExpression)
-		? Object.entries(testExpression) // Pull out just the keys that are true)
-			.filter(([key, bool]) => !!bool && key in matchClauses)
+		? Object.entries(matchClauses) // Pull out just the keys that are true)
+			.filter( ( [ key ] ) => !!testExpression[ key ] )
 			.map( v => v[ 0 ] )
 		: testExpression;
 /**
