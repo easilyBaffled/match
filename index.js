@@ -22,7 +22,19 @@ export const extractMatchingKeys = ( testExpression, matchClauses = {} ) =>
  * @returns {[*]|any|null} - null or a single item or subset of the values in matchClauses
  */
 export const getMatchedValues = ( matchingKeys, matchClauses, defaultKey, matchAll = false ) =>
-	matchAll
+		[].concat( matchingKeys )
+			.concat( defaultKey )
+			.reduce( ( matches, key ) =>
+					[ ...matches, matchClauses[ key ] ], // Use spread instead of `.concat`, because `.concat` will flatten an array found with matchClauses[ key ]
+				[] )
+			.filter( v => v !== undefined )
+			.reduce( ( results = [], value, index, arr ) =>
+				matchAll
+					? [ ...results, value ]
+					: arr[ 0 ]
+			, undefined );
+/*
+* 	matchAll
 		? [].concat( matchingKeys )
 			.concat( defaultKey )
 			.reduce( ( matches, key ) =>
@@ -30,11 +42,11 @@ export const getMatchedValues = ( matchingKeys, matchClauses, defaultKey, matchA
 				[] )
 			.filter( v => v !== undefined )
 		: matchingKeys in matchClauses
-		? matchClauses[ matchingKeys ]
-		: defaultKey in matchClauses
-			? matchClauses[ defaultKey ]
-			: undefined;
-
+			? matchClauses[ matchingKeys ]
+			: defaultKey in matchClauses
+				? matchClauses[ defaultKey ]
+				: undefined;
+* */
 
 /**
  * Options for the `match` function
@@ -103,6 +115,7 @@ const match = ( matchClauses, testExpression, options = {} ) => {
 		return ( testExpression = '', options ) => match( matchClauses, testExpression, options );
 
 	const result = getMatchedValues( extractMatchingKeys( testExpression, matchClauses ), matchClauses, options.defaultKey || '_', options.matchAll || false );
+
 	return typeof result === 'function'
 		? result( testExpression )
 		: result;

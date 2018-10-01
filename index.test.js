@@ -1,6 +1,7 @@
 import match, { extractMatchingKeys, getMatchedValues } from './index.js';
 
 import flow from 'lodash/flow';
+import isEmpty from 'lodash/isEmpty';
 import isEqual from 'lodash/isEqual';
 import _ from 'lodash/fp';
 import { check, gen, property } from 'testcheck';
@@ -170,7 +171,7 @@ describe( 'matchKeysToTests', () => {
 
 	describe( 'Match All', () => {
 		it( 'will check the defaultKey automatically', () => {
-			getAllMatches( [ 'a' ], matchClauses ).toEqual( [ 'a', DEFAULT_VALUE ] );
+			getAllMatches( [ 'a' ], matchClauses, '_', true ).toEqual( [ 'a', DEFAULT_VALUE ] );
 
 			check.expect(
 				genMatches,
@@ -178,15 +179,20 @@ describe( 'matchKeysToTests', () => {
 			);
 		} );
 
-		it( 'will always return an array', () => {
+		it( 'will return an array as long as matchClauses is defined', () => {
 			getAllMatches( [], matchClauses ).toBeInstanceOf( Array );
 			getAllMatches( Object.keys( matchClauses ), matchClauses ).toBeInstanceOf( Array );
-			getAllMatches( [], {} ).toBeInstanceOf( Array );
-			getAllMatches( [], [] ).toBeInstanceOf( Array );
+			getAllMatches( [], {} ).toBe( undefined );
+			getAllMatches( [], [] ).toBe( undefined );
 
 			check.expect(
 				genMatches,
-				( [ keys, clauses ] ) => getMatchedValues( keys, clauses, defaultKey, true ) instanceof Array
+				( [ keys, clauses ] ) => {
+					const results = getMatchedValues( keys, clauses, defaultKey, true );
+					return ( ( isEmpty( keys ) && !clauses[ defaultKey ] ) || isEmpty( clauses ) )
+						? results === undefined
+						: results instanceof Array
+				}
 			);
 		} )
 	} );
@@ -295,7 +301,7 @@ describe( 'match', () => {
 			validMatchClauses,
 			obj => {
 				const matchingKey = pickRandomNonMatchingKey( obj );
-				return isEqual( match( obj )( matchingKey, { matchAll: true } ), [] );
+				return isEqual( match( obj )( matchingKey, { matchAll: true } ), undefined );
 			}
 		)
 	} );
@@ -330,3 +336,43 @@ describe( 'match', () => {
 		)
 	} );
 } );
+
+test( 'getVectorLength', () => {
+	const getVectorLength = match( {
+		z: ( { x, y, z } ) => console.ident( Math.sqrt(x ** 2 + y ** 2 + z ** 2) ),
+		y: ( { x, y } ) => Math.sqrt(x ** 2 + y ** 2 ),
+		_: vector => vector.length
+	} );
+console.log( getVectorLength( { x: 1, y: 1, z: 1 } ) )
+	// expect( getVectorLength({x: 1, y: 2, z: 3}) ).toBe( 3.74165 );
+} );
+/*
+test( 'Reducer Example', () => { // Taken from https://redux.js.org/basics/reducers#splitting-reducers
+	const todoReducer = ( state, { type, ...payload } ) => match( {
+		'set-visibility-filter': () => ( { ...state, visibilityFilter: payload.filter} ),
+		'add-todo': () => ( {...state, todos: [...state.todos, { text: payload.text}]} ),
+		'toggle-todo': () => ( {
+			...state,
+			todos: state.todos.map((todo, idx) => idx === payload.index
+				? {...todo, done: !todo.done}
+				: todo
+			)
+		} ),
+		_: {}
+	} )( type );
+
+	const propBasedTodoReducer = ( state, action ) => match( {
+		filter: ( { filter } ) => ( { ...state, visibilityFilter: filter} ),
+		text: ( { text } ) => ( {...state, todos: [...state.todos, {text}]} ),
+		index: ( { index } ) => ( {
+			...state,
+			todos: state.todos.map((todo, idx) =>
+				idx === index
+					? {...todo, done: !todo.done}
+					: todo
+			)
+		} ),
+		_: {}
+	} )( action )
+} );
+*/
