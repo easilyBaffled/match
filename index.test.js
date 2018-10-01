@@ -5,6 +5,8 @@ import isEqual from 'lodash/isEqual';
 import _ from 'lodash/fp';
 import { check, gen, property } from 'testcheck';
 
+console.ident = ( v, label = '' ) => ( console.log( label, v ), v );
+
 const DEFAULT_VALUE = 'default';
 
 const validMatchClauses  = gen.object( gen.primitive.notEmpty(), gen.any );
@@ -293,7 +295,7 @@ describe( 'match', () => {
             validMatchClauses,
             obj => {
                 const matchingKey = pickRandomNonMatchingKey( obj );
-                return isEqual( match( obj )( matchingKey, true ), [] );
+                return isEqual( match( obj )( matchingKey, { matchAll: true } ), [] );
             }
         )
     } );
@@ -313,7 +315,7 @@ describe( 'match', () => {
             matchClausesWithDefault,
             obj => {
                 const matchingKey = pickRandomNonMatchingKey( obj );
-                return isEqual( match( obj, matchingKey, { matchAll: true } ), [ DEFAULT_VALUE ] );
+                return isEqual( match( obj )( matchingKey, { matchAll: true } ), [ DEFAULT_VALUE ] );
             }
         )
     } );
