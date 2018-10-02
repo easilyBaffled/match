@@ -12,13 +12,12 @@
 		"node": ">=6"
 	},
 	"scripts": {
-		"test": "jest",
+		"test": "jest --coverage --coverageReporters=text-lcov | coveralls",
 		"test:6": "npx --package=node-bin@6 -- npm test",
 		"test:lts": "npx --package=node-bin@lts -- npm test",
 	  	"test:latest:": "npx --package=node-bin@latest -- npm test",
 		"test:watch": "jest --watch",
 		"test:coverage": "jest --coverage",
-		"test:report": "jest --coverage --coverageReporters=text-lcov | coveralls",
 		"postcoveralls": "rimraf ./coverage",
 		"patch": "npm version patch && npm publish",
 		"minor": "npm version minor && npm publish",
