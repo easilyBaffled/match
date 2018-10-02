@@ -339,13 +339,25 @@ describe( 'match', () => {
 
 test( 'getVectorLength', () => {
 	const getVectorLength = match( {
-		z: ( { x, y, z } ) => console.ident( Math.sqrt(x ** 2 + y ** 2 + z ** 2) ),
+		z: ( { x, y, z } ) => Math.sqrt(x ** 2 + y ** 2 + z ** 2),
 		y: ( { x, y } ) => Math.sqrt(x ** 2 + y ** 2 ),
 		_: vector => vector.length
 	} );
 
 	expect( getVectorLength({x: 1, y: 2, z: 3}) ).toBe( 3.7416573867739413 );
 } );
+
+const usersTypes = [
+	{ type: 'prod', privilege: true },
+	{ type: 'dev', privilege: true },
+	{ type: 'admin', privilege: true },
+	{ type: 'admin', privilege: false },
+	{ type: 'customer', privilege: true },
+	{ type: 'customer', privilege: false },
+];
+
+
+
 /*
 test( 'Reducer Example', () => { // Taken from https://redux.js.org/basics/reducers#splitting-reducers
 	const todoReducer = ( state, { type, ...payload } ) => match( {
