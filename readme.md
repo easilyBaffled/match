@@ -1,5 +1,5 @@
-[![Build Status](https://travis-ci.org/easilyBaffled/switch-component.svg?branch=master)](https://travis-ci.org/easilyBaffled/match)
-[![Coverage Status](https://coveralls.io/repos/github/easilyBaffled/switch-component/badge.svg?branch=master)](https://coveralls.io/github/easilyBaffled/match?branch=master)
+[![Build Status](https://travis-ci.org/easilyBaffled/match.svg?branch=master)](https://travis-ci.org/easilyBaffled/match)
+[![Coverage Status](https://coveralls.io/repos/github/easilyBaffled/match/badge.svg?branch=master)](https://coveralls.io/github/easilyBaffled/match?branch=master)
 [![Codacy Badge](https://api.codacy.com/project/badge/Grade/7ed423c34981427a9e6d5cb6d9dfbb97)](https://www.codacy.com/app/easilyBaffled/match?utm_source=github.com&amp;utm_medium=referral&amp;utm_content=easilyBaffled/match&amp;utm_campaign=Badge_Grade)
 
 <p align="center">
