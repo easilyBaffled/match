@@ -62,6 +62,3 @@ As such development moving forward will less focused on developing features and 
 	- [ ] Prepack - condense the nice readable code into something more performance
 	- [ ] -ify - all of the usual transformations 
 - [ ] Git hooks - no bad commits
-- Typescript - just so I can try [GitHub - paldepind/ts-quickcheck: TypeScript QuickCheck](https://github.com/paldepind/ts-quickcheck)
-	- [ ] Add definitions 
-	- [ ] Add QuickCheck 
