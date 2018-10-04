@@ -11,10 +11,7 @@
 <p align="center">
   Simple Matching for Mixed-Up Situations
 </p>
-
-This module is meant as a tidy replacement for the ugly but often necessary ternary operators.
-
-While this was inspired by pattern matching ( check out the [propsal for JS](https://github.com/tc39/proposal-pattern-matching) ) 
+This module was made with affection for but in no way trying to be [Pattern Matching](https://github.com/tc39/proposal-pattern-matching). Instead it is made to replace ugly ternary. 
 
 It matches a test value to a simple key value. Simple in that the key must be a valid key in a object, so a primitive.  
 
