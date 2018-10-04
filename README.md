@@ -11,7 +11,7 @@
 <p align="center">
   Simple Matching for Mixed-Up Situations
 </p>
-This module was made with affection for but in no way trying to be [Pattern Matching](https://github.com/tc39/proposal-pattern-matching). Instead it is made to replace ugly ternary. 
+This module was made with affection for but in no way trying to be a pattern matcher. We've already got that [on the way](https://github.com/tc39/proposal-pattern-matching). Instead it is made to replace ugly ternary. 
 
 It matches a test value to a simple key value. Simple in that the key must be a valid key in a object, so a primitive.  
 
@@ -64,6 +64,3 @@ As such development moving forward will less focused on developing features and 
 	- [ ] Prepack - condense the nice readable code into something more performance
 	- [ ] -ify - all of the usual transformations 
 - [ ] Git hooks - no bad commits
-- Typescript - just so I can try [GitHub - paldepind/ts-quickcheck: TypeScript QuickCheck](https://github.com/paldepind/ts-quickcheck)
-	- [ ] Add definitions 
-	- [ ] Add QuickCheck 
