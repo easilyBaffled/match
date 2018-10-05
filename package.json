@@ -1,6 +1,6 @@
 {
 	"name": "match-by",
-	"version": "0.2.0",
+	"version": "0.3.0",
 	"description": "Somewhere between pattern matching and a ternary",
 	"license": "MIT",
 	"repository": "easilyBaffled/match",
