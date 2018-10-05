@@ -33,20 +33,6 @@ export const getMatchedValues = ( matchingKeys, matchClauses, defaultKey, matchA
 					? [ ...results, value ]
 					: arr[ 0 ]
 			, undefined );
-/*
-* 	matchAll
-		? [].concat( matchingKeys )
-			.concat( defaultKey )
-			.reduce( ( matches, key ) =>
-					matches.concat( matchClauses[ key ] ),
-				[] )
-			.filter( v => v !== undefined )
-		: matchingKeys in matchClauses
-			? matchClauses[ matchingKeys ]
-			: defaultKey in matchClauses
-				? matchClauses[ defaultKey ]
-				: undefined;
-* */
 
 /**
  * Options for the `match` function

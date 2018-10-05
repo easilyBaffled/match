@@ -1,4 +1,4 @@
-import match, { extractMatchingKeys, getMatchedValues } from './index.js';
+import match, { extractMatchingKeys, getMatchedValues } from './';
 
 import flow from 'lodash/flow';
 import isEmpty from 'lodash/isEmpty';
@@ -12,13 +12,11 @@ const DEFAULT_VALUE = 'default';
 
 const validMatchClauses  = gen.object( gen.primitive.notEmpty(), gen.any );
 const matchClausesWithDefault  = validMatchClauses.then( obj => ( { ...obj, _: DEFAULT_VALUE } ) );
-const matchClausesNoUndefined = gen.object( gen.primitive.notEmpty(), gen.any.suchThat( v => v !== undefined ) );
-
 
 const shuffleKeys = flow(
 	Object.keys,
 	_.shuffle
-)
+);
 
 const pickRandomKey = flow(
 	shuffleKeys,
