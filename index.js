@@ -1,18 +1,40 @@
-// console.ident = ( v, label = '' ) => ( console.log( label, v ), v );
+if ( process.env.NODE_ENV === 'development' ) {
+    console.ident = ( v, label = '' ) => (
+        console.log( label, v ),
+        v
+    );
+}
 
 // Pulled from lodash https://github.com/lodash/lodash/blob/4.17.10/lodash.js#L11742
 // rather than brining in the library itself
 function isObject(value) {
-	const type = typeof value;
-	return value !== null && (type === 'object' || type === 'function');
+    const type = typeof value;
+    return value !== null && (type === 'object' || type === 'function');
 }
 
 export const extractMatchingKeys = ( testExpression, matchClauses = {} ) =>
-	isObject(testExpression)
-		? Object.entries(matchClauses) // Pull out just the keys that are true)
-			.filter( ( [ key ] ) => !!testExpression[ key ] )
-			.map( v => v[ 0 ] )
-		: testExpression;
+    isObject( testExpression )
+    // Pull out just the keys that are truthy
+        ? Object.keys( matchClauses )
+            .reduce( ( acc, key ) =>
+                testExpression[ key ]
+                    ? [ ...acc, key ]
+                    : acc,
+            []
+            )
+        : testExpression;
+
+const pickMatchingValues = matchClauses => ( matches, key ) =>
+    matchClauses[ key ] === undefined
+        ? matches
+        : [ ...matches, matchClauses[ key ] ]; // Use spread instead of `.concat`, because `.concat` will flatten an array found with matchClauses[ key ]
+
+const pickAllOrOne = matchAll => ( results = [], value, index, arr ) =>
+// There is no clean way to break out of a reduce. So it has to loop through the whole thing to produce the result
+    matchAll
+        ? [ ...results, value ]
+        : arr[ 0 ];
+
 /**
  *
  * @param {Array|String} matchingKeys - an array of non-empty primitives
@@ -22,17 +44,15 @@ export const extractMatchingKeys = ( testExpression, matchClauses = {} ) =>
  * @returns {[*]|any|null} - null or a single item or subset of the values in matchClauses
  */
 export const getMatchedValues = ( matchingKeys, matchClauses, defaultKey, matchAll = false ) =>
-		[].concat( matchingKeys )
-			.concat( defaultKey )
-			.reduce( ( matches, key ) =>
-					[ ...matches, matchClauses[ key ] ], // Use spread instead of `.concat`, because `.concat` will flatten an array found with matchClauses[ key ]
-				[] )
-			.filter( v => v !== undefined )
-			.reduce( ( results = [], value, index, arr ) =>
-				matchAll
-					? [ ...results, value ]
-					: arr[ 0 ]
-			, undefined );
+    [  // Ensure we are working with an array, and that the defaultKey is included
+        ...( Array.isArray( matchingKeys )
+            ? matchingKeys
+            : [ matchingKeys ] )
+        , defaultKey
+    ]
+        .reduce( pickMatchingValues( matchClauses ), [] ) // Pick out all of the values in matchClauses that have a matching key and is not undefined
+        .reduce( pickAllOrOne( matchAll ), undefined ); // If the array is empty it means there were no matches and the function should return `undefined`, so undefined needs to be explicitly set here.
+
 
 /**
  * Options for the `match` function
@@ -90,21 +110,21 @@ export const getMatchedValues = ( matchingKeys, matchClauses, defaultKey, matchA
  */
 
 const match = ( matchClauses, testExpression, options = {} ) => {
-	if (Array.isArray(matchClauses) || !isObject(matchClauses))
-	{
-		throw TypeError(
-			`matchClauses must be an Object instead it received ${typeof matchClauses}`
-		);
-	}
+    if (Array.isArray(matchClauses) || !isObject(matchClauses))
+    {
+        throw TypeError(
+            `matchClauses must be an Object instead it received ${typeof matchClauses}`
+        );
+    }
 
-	if  ( testExpression === undefined )
-		return ( testExpression = '', options ) => match( matchClauses, testExpression, options );
+    if  ( testExpression === undefined )
+        return ( testExpression = '', options ) => match( matchClauses, testExpression, options );
 
-	const result = getMatchedValues( extractMatchingKeys( testExpression, matchClauses ), matchClauses, options.defaultKey || '_', options.matchAll || false );
+    const result = getMatchedValues( extractMatchingKeys( testExpression, matchClauses ), matchClauses, options.defaultKey || '_', options.matchAll || false );
 
-	return typeof result === 'function'
-		? result( testExpression )
-		: result;
+    return typeof result === 'function'
+        ? result( testExpression )
+        : result;
 };
 
 export default match;
