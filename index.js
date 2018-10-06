@@ -12,16 +12,22 @@ function isObject(value) {
     return value !== null && (type === 'object' || type === 'function');
 }
 
+const pullKeyWithTruthyValue = testExpression => ( acc, key ) =>
+    testExpression[ key ]
+        ? [ ...acc, key ]
+        : acc;
+
+/**
+ *
+ * @param {(Object|string|number|boolean)} testExpression
+ * @param {Object} matchClauses
+ * @returns {(Array|string|number|boolean)} a single primitive or an array of keys who's values in testExpression were not undefined
+ */
 export const extractMatchingKeys = ( testExpression, matchClauses = {} ) =>
     isObject( testExpression )
     // Pull out just the keys that are truthy
         ? Object.keys( matchClauses )
-            .reduce( ( acc, key ) =>
-                testExpression[ key ]
-                    ? [ ...acc, key ]
-                    : acc,
-            []
-            )
+            .reduce( pullKeyWithTruthyValue( testExpression ), [] )
         : testExpression;
 
 const pickMatchingValues = matchClauses => ( matches, key ) =>
@@ -53,13 +59,6 @@ export const getMatchedValues = ( matchingKeys, matchClauses, defaultKey, matchA
         .reduce( pickMatchingValues( matchClauses ), [] ) // Pick out all of the values in matchClauses that have a matching key and is not undefined
         .reduce( pickAllOrOne( matchAll ), undefined ); // If the array is empty it means there were no matches and the function should return `undefined`, so undefined needs to be explicitly set here.
 
-
-/**
- * Options for the `match` function
- * @typedef {Object} Options
- * @property {string} [ defaultKey = _ ]  - The key used for the default value in the matchClauses.
- * @property {boolean} [ matchAll = false ] - If true `match` will return an array of all matches otherwise it will return just the first match
- */
 /**
  * Match a value against a set of keys and produce the associated value.
  * The value may be a primitive, in which case it is matched directly against the keys of the `matchClauses` object.

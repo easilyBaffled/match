@@ -48,7 +48,7 @@ check.expect = ( ...args ) => {
 
 	let checkOpt = {
 		numTests: process.env.TRAVIS
-			? 1000
+			? 500
 			: 10
 	};
 
