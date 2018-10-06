@@ -46,17 +46,27 @@ expect.extend({
 check.expect = ( ...args ) => {
 	let last = args.pop();
 
+	let checkOpt = {
+		numTests: process.env.TRAVIS
+			? 1000
+			: 10
+	};
+
 	if( typeof last === "function" )
 	{
 		args.push( last );
-		last = {};
 	}
+	else
+	{
+		checkOpt.numTest = last.numTest
+	}
+
 	expect(
 		check(
 			property(
 				...args
 			),
-			last
+			checkOpt
 		)
 	).passed()
 }
