@@ -7,7 +7,7 @@
     <img alt="match-by" src="media/match-by.svg" width="144">
 </p>
 <p align="center">
-<a href="https://nodei.co/npm/<package>/"><img src="https://nodei.co/npm/<package>.png"></a>
+<a href="https://nodei.co/npm/match-by/"><img src="https://nodei.co/npm/match-by.png"></a>
 </p>
 <h3 align="center">
   Match
