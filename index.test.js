@@ -49,7 +49,7 @@ check.expect = ( ...args ) => {
 	let checkOpt = {
 		numTests: process.env.TRAVIS
 			? 100
-			: 10
+			: 15
 	};
 
 	if( typeof last === "function" )
@@ -364,7 +364,22 @@ const usersTypes = [
 	{ type: 'customer', privilege: false },
 ];
 
+test('Trafic Light Example', () => {
+	const intersectionSituation = 'stop';
 
+	const lightOptions = {
+		stop: 'red',
+		yeild: 'yellow',
+		go: 'green',
+		_: 'yellow flashing'
+	};
+
+	const traficLightDisplay = match( lightOptions, intersectionSituation );
+	expect( traficLightDisplay ).toBe( 'red' );
+	expect( match( lightOptions, 'yeild' ) ).toBe( 'yellow' );
+	expect( match( lightOptions, 'go' ) ).toBe( 'green' );
+	expect( match( lightOptions )() ).toBe( 'yellow flashing' );
+})
 
 /*
 test( 'Reducer Example', () => { // Taken from https://redux.js.org/basics/reducers#splitting-reducers
