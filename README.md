@@ -1,17 +1,22 @@
-[![Build Status](https://travis-ci.org/easilyBaffled/match.svg?branch=master)](https://travis-ci.org/easilyBaffled/match)
-[![Coverage Status](https://coveralls.io/repos/github/easilyBaffled/match/badge.svg?branch=master)](https://coveralls.io/github/easilyBaffled/match?branch=master)
-[![Codacy Badge](https://api.codacy.com/project/badge/Grade/7ed423c34981427a9e6d5cb6d9dfbb97)](https://www.codacy.com/app/easilyBaffled/match?utm_source=github.com&amp;utm_medium=referral&amp;utm_content=easilyBaffled/match&amp;utm_campaign=Badge_Grade)
-[![Greenkeeper badge](https://badges.greenkeeper.io/easilyBaffled/match.svg)](https://greenkeeper.io/)
-
+<h1 align="center" style="border-bottom: none;">
+  Match
+</h1>
+<h1 align="center">
+  Match
+</h1>
 <p align="center">
     <img alt="match-by" src="media/match-by.svg" width="144">
 </p>
 <p align="center">
 <a href="https://nodei.co/npm/match-by/"><img src="https://nodei.co/npm/match-by.png"></a>
 </p>
-<h3 align="center">
-  Match
-</h3>
+<p align="center">
+<a href="https://travis-ci.org/easilyBaffled/match" rel="nofollow"><img src="https://camo.githubusercontent.com/fe9557a560551194c9e600170899447032f1eeb2/68747470733a2f2f7472617669732d63692e6f72672f656173696c79426166666c65642f6d617463682e7376673f6272616e63683d6d6173746572" alt="Build Status" data-canonical-src="https://travis-ci.org/easilyBaffled/match.svg?branch=master" style="max-width:100%;"></a>
+<a href="https://coveralls.io/github/easilyBaffled/match?branch=master" rel="nofollow"><img src="https://camo.githubusercontent.com/4367e6f47be2033e9fdbb1819429a3befbbdfffc/68747470733a2f2f636f766572616c6c732e696f2f7265706f732f6769746875622f656173696c79426166666c65642f6d617463682f62616467652e7376673f6272616e63683d6d6173746572" alt="Coverage Status" data-canonical-src="https://coveralls.io/repos/github/easilyBaffled/match/badge.svg?branch=master" style="max-width:100%;"></a>
+<a href="https://www.codacy.com/app/easilyBaffled/match?utm_source=github.com&amp;utm_medium=referral&amp;utm_content=easilyBaffled/match&amp;utm_campaign=Badge_Grade" rel="nofollow"><img src="https://camo.githubusercontent.com/5e4eddac9d31ae942dc3aeb686b705852b5bbbc4/68747470733a2f2f6170692e636f646163792e636f6d2f70726f6a6563742f62616467652f47726164652f3765643432336333343938313432376139653664356362366439646662623937" alt="Codacy Badge" data-canonical-src="https://api.codacy.com/project/badge/Grade/7ed423c34981427a9e6d5cb6d9dfbb97" style="max-width:100%;"></a>
+<a href="https://greenkeeper.io/" rel="nofollow"><img src="https://camo.githubusercontent.com/3fe5f96510bebfa5fc2adcfe114036d30ef2e3df/68747470733a2f2f6261646765732e677265656e6b65657065722e696f2f656173696c79426166666c65642f6d617463682e737667" alt="Greenkeeper badge" data-canonical-src="https://badges.greenkeeper.io/easilyBaffled/match.svg" style="max-width:100%;"></a>
+</p>
+
 <p align="center">
   Simple Matching for Mixed-Up Situations
 </p>
