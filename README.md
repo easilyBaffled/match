@@ -1,9 +1,6 @@
 <h1 align="center" style="border-bottom: none;">
   Match
 </h1>
-<h1 align="center">
-  Match
-</h1>
 <p align="center">
     <img alt="match-by" src="media/match-by.svg" width="144">
 </p>
