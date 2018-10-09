@@ -5,13 +5,23 @@ if ( process.env.NODE_ENV === 'development' ) {
     );
 }
 
-// Pulled from lodash https://github.com/lodash/lodash/blob/4.17.10/lodash.js#L11742
-// rather than brining in the library itself
+
+/**
+ * Pulled from lodash https://github.com/lodash/lodash/blob/4.17.10/lodash.js#L11742
+ * rather than bringing in the library itself
+ * @param value
+ * @returns {boolean}
+ */
 function isObject(value) {
     const type = typeof value;
     return value !== null && (type === 'object' || type === 'function');
 }
 
+/**
+ * Reducer function
+ * @param {Object} testExpression
+ * @returns {function(string[], string): string[]}
+ */
 const pullKeyWithTruthyValue = testExpression => ( acc, key ) =>
     testExpression[ key ]
         ? [ ...acc, key ]
@@ -30,11 +40,21 @@ export const extractMatchingKeys = ( testExpression, matchClauses = {} ) =>
             .reduce( pullKeyWithTruthyValue( testExpression ), [] )
         : testExpression;
 
+/**
+ *
+ * @param {Object} matchClauses
+ * @returns {function(*[], *): *[]}
+ */
 const pickMatchingValues = matchClauses => ( matches, key ) =>
     matchClauses[ key ] === undefined
         ? matches
         : [ ...matches, matchClauses[ key ] ]; // Use spread instead of `.concat`, because `.concat` will flatten an array found with matchClauses[ key ]
 
+/**
+ *
+ * @param {boolean} matchAll
+ * @returns {function(*=[], *, number, *[]): *[]}
+ */
 const pickAllOrOne = matchAll => ( results = [], value, index, arr ) =>
 // There is no clean way to break out of a reduce. So it has to loop through the whole thing to produce the result
     matchAll
