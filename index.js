@@ -137,7 +137,8 @@ const match = ( matchClauses, testExpression, options = {} ) => {
     }
 
     if  ( testExpression === undefined )
-        return ( testExpression = '', options ) => match( matchClauses, testExpression, options );
+        return ( testExpression = '', options ) =>
+            match( matchClauses, testExpression, options );
 
     const result = getMatchedValues( extractMatchingKeys( testExpression, matchClauses ), matchClauses, options.defaultKey || '_', options.matchAll || false );
 

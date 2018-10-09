@@ -27,21 +27,21 @@ It matches a test value to a simple key value. Simple in that the key must be a 
 ## Motivating Examples 
 ```javascript
 const traficLightDisplay = intersection === 'stop'
-							? 'red'
-							: intersection === 'yeild'
-								? 'yellow'
-								: intersection === 'go'
-									? 'green'
-									: 'yellow flashing';
+                            ? 'red'
+                            : intersection === 'yeild'
+                                ? 'yellow'
+                                : intersection === 'go'
+                                    ? 'green'
+                                    : 'yellow flashing';
 ```
 becomes 
 ```javascript
 const lightOptions = {
-						stop: 'red',
-						yeild: 'yellow',
-						go: 'green',
-						_: 'yellow flashing'
-					};
+                        stop: 'red',
+                        yeild: 'yellow',
+                        go: 'green',
+                        _: 'yellow flashing'
+                    };
 
 const traficLightDisplay = match( lightOptions, 'stop' );
 ```
@@ -62,46 +62,74 @@ With `match` it becomes
 
 ```jsx
 const userTypeViewMatching = match( {
-							  developer: () => <Debug ... />
-							  adminBeta: () => <Admin beta />
-							  admin: () => <Admin />
-							  userBeta: () => <Customer beta />
-							  _: () => <Customer />
-							} )
+                              developer: () => <Debug ... />
+                              adminBeta: () => <Admin beta />
+                              admin: () => <Admin />
+                              userBeta: () => <Customer beta />
+                              _: () => <Customer />
+                            } )
 
 const ViewType = ( { userCase } ) => 
     userTypeViewMatching( { 
-    	...userCase, 
-    	adminBeta: userCase.admin && userCase.beta, 
-    	customerBeta: !userCase.admin && userCase.beta 
-	} )    
+        ...userCase, 
+        adminBeta: userCase.admin && userCase.beta, 
+        customerBeta: !userCase.admin && userCase.beta 
+    } )    
+```
+
+There is an additional option `matchAll` that will let you turn 
+```jsx
+const WeatherCard = ({ sunny, cloudy, windy, rain, snow }) => (
+    <Card>
+        {sunny && <SunIcon />}
+        {cloudy && <CloudIcon />}
+        {windy && <WindIcon />}
+        {rain && <RainIcon />}
+        {snow && <SnowIcon />}
+    </Card>
+);
+```
+into 
+```jsx
+const weatherCardMatcher = match(
+    {
+        sunny: SunIcon,
+        cloudy: CloudIcon,
+        windy: WindIcon,
+        rain: RainIcon,
+        snow: SnowIcon
+    },
+    { matchAll: true }
+);
+
+const WeatherCard = props => <Card>{weatherCardMatcher(props)}</Card>;
 ```
 
 
 ## Usage
 ```js
 match( {
-	'a': 1,
-	'b': 2
+    'a': 1,
+    'b': 2
 }, 'a' );
 // => 1
 ```
 
 Will return undefined if no match is found
-```javascript
-match( {
-	'a': 1,
-	'b': 2
-}, 'c' );
-// => undefined 
-```
+> ```javascript
+> match( {
+>     'a': 1,
+>     'b': 2
+> }, 'c' );
+> // => undefined 
+> ```
 
 Will return a default value when no match is found if a default key/value is in the matchClauses
 ```javascript
 match( {
-	'a': 1,
-	'b': 2,
-	_: 'default' // <- '_' is the default `defaultKey`
+    'a': 1,
+    'b': 2,
+    _: 'default' // <- '_' is the default `defaultKey`
 }, 'c' );
 // => 'default' 
 ```
@@ -110,9 +138,9 @@ match( {
 Match can be partially applied with just the matchClauses ahead of time.
 ```js
 const requestStatus = match( {
-	200: 'success',
-	404: 'JSON not found',
-	_: 'Request Failed'
+    200: 'success',
+    404: 'JSON not found',
+    _: 'Request Failed'
 } );
 
 const res = await fetch(jsonService)
@@ -123,24 +151,24 @@ requestStatus( res.status )
 If the matching value is a function, it will be called with the `testExpression`
 ```javascript
 const getVectorLength = match( {
-		z: ( { x, y, z } ) => Math.sqrt(x ** 2 + y ** 2 + z ** 2),
-		y: ( { x, y } ) => Math.sqrt(x ** 2 + y ** 2 ),
-		_: vector => vector.length
-	} );
+        z: ( { x, y, z } ) => Math.sqrt(x ** 2 + y ** 2 + z ** 2),
+        y: ( { x, y } ) => Math.sqrt(x ** 2 + y ** 2 ),
+        _: vector => vector.length
+    } );
 getVectorLength({x: 1, y: 2, z: 3})
 // =>  3.74165
 ```
 
 
-```javascript
+```jsx
 <Fetch lazy url="https://api.github.com/users/easilyBaffled">
-	{  // Fetch is a render prop that passes the fetch status (`{loading, data, error}`) to its child
-		match( {
-			data: ( { data } ) => <pre>{JSON.stringify(data, null, 2)}</pre>
-			loading: () => <h1>...Loading</h1>,
-			error: ({ error }) => <h1>{error.message}</h1>
-		} )
-	}
+    {  // Fetch is a render prop that passes the fetch status (`{loading, data, error}`) to its child
+        match( {
+            data: ( { data } ) => <pre>{JSON.stringify(data, null, 2)}</pre>
+            loading: () => <h1>...Loading</h1>,
+            error: ({ error }) => <h1>{error.message}</h1>
+        } )
+    }
 </Fetch>
 ```
 
