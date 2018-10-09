@@ -26,59 +26,60 @@ It matches a test value to a simple key value. Simple in that the key must be a 
 
 ## Motivating Examples 
 ```javascript
-const traficLightDisplay = intersection === 'stop'
-                            ? 'red'
-                            : intersection === 'yeild'
-                                ? 'yellow'
-                                : intersection === 'go'
-                                    ? 'green'
-                                    : 'yellow flashing';
+const traficLightDisplay = 
+    intersection === 'stop'
+        ? 'red'
+        : intersection === 'yeild'
+            ? 'yellow'
+            : intersection === 'go'
+                ? 'green'
+                : 'yellow flashing';
 ```
 becomes 
 ```javascript
 const lightOptions = {
-                        stop: 'red',
-                        yeild: 'yellow',
-                        go: 'green',
-                        _: 'yellow flashing'
-                    };
+    stop: 'red',
+    yeild: 'yellow',
+    go: 'green',
+    _: 'yellow flashing'
+};
 
 const traficLightDisplay = match( lightOptions, 'stop' );
 ```
 Though that situation could be cleared up with a mapper function. What a mapper couldn't cleanly handle for you would be something like 
 
-```jsx
-const ViewType = user.developer 
-                    ? <Debug ... />
-                    : user.admin
-                        ? user.beta 
-                            ? <Admin beta />
-                            : <Admin />
-                        : user.beta
-                            ? <Customer beta />
-                            : <Customer />
+```jsx harmony
+const ViewType = user.developer
+    ? <Debug ... />
+    : user.admin
+        ? user.beta
+            ? <Admin beta />
+            : <Admin />
+        : user.beta
+            ? <Customer beta />
+            : <Customer />
 ```
 With `match` it becomes
 
-```jsx
+```jsx harmony
 const userTypeViewMatching = match( {
-                              developer: () => <Debug ... />
-                              adminBeta: () => <Admin beta />
-                              admin: () => <Admin />
-                              userBeta: () => <Customer beta />
-                              _: () => <Customer />
-                            } )
+    developer: () => <Debug />,
+    adminBeta: () => <Admin beta />,
+    admin: () => <Admin />,
+    userBeta: () => <Customer beta />,
+    _: () => <Customer />
+} );
 
-const ViewType = ( { userCase } ) => 
-    userTypeViewMatching( { 
-        ...userCase, 
-        adminBeta: userCase.admin && userCase.beta, 
-        customerBeta: !userCase.admin && userCase.beta 
-    } )    
+const ViewType = ( { userCase } ) =>
+    userTypeViewMatching( {
+        ...userCase,
+        adminBeta: userCase.admin && userCase.beta,
+        customerBeta: !userCase.admin && userCase.beta
+    } );  
 ```
 
 There is an additional option `matchAll` that will let you turn 
-```jsx
+```jsx harmony
 const WeatherCard = ({ sunny, cloudy, windy, rain, snow }) => (
     <Card>
         {sunny && <SunIcon />}
@@ -90,7 +91,7 @@ const WeatherCard = ({ sunny, cloudy, windy, rain, snow }) => (
 );
 ```
 into 
-```jsx
+```jsx harmony
 const weatherCardMatcher = match(
     {
         sunny: SunIcon,
@@ -116,13 +117,13 @@ match( {
 ```
 
 Will return undefined if no match is found
-> ```javascript
-> match( {
->     'a': 1,
->     'b': 2
-> }, 'c' );
-> // => undefined 
-> ```
+```javascript
+match( {
+    'a': 1,
+    'b': 2
+}, 'c' );
+// => undefined 
+```
 
 Will return a default value when no match is found if a default key/value is in the matchClauses
 ```javascript
@@ -143,7 +144,7 @@ const requestStatus = match( {
     _: 'Request Failed'
 } );
 
-const res = await fetch(jsonService)
+const res = await fetch( jsonService )
 requestStatus( res.status )
 ```
 
@@ -160,7 +161,7 @@ getVectorLength({x: 1, y: 2, z: 3})
 ```
 
 
-```jsx
+```jsx harmony
 <Fetch lazy url="https://api.github.com/users/easilyBaffled">
     {  // Fetch is a render prop that passes the fetch status (`{loading, data, error}`) to its child
         match( {
