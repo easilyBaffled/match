@@ -20,8 +20,8 @@
 
 ---
 
-This module was made with affection for but in no way trying to be a pattern matcher. We've already got that [on the way](https://github.com/tc39/proposal-pattern-matching). Instead it is made to replace ugly ternary.
-It matches a test value to a simple key value. Simple in that the key must be a valid key in a object, so a primitive.
+This module was made with affection for but in no way trying to be a pattern matcher. We've already got that [on the way](https://github.com/tc39/proposal-pattern-matching). Instead, it is made to replace ugly ternary.
+It matches a test value to a simple key value. Simple in that the key must be a valid key in an object, so a primitive.
 
 
 ## Motivating Examples 
@@ -154,7 +154,7 @@ The value may be a primitive, in which case it is matched directly against the k
 The value may also be an object in which case, the keys in the object, whose values are not empty are used to match against the `matchClauses`.
 
 #### Arguments
-1. `matchClauses` *(Object)*: an object who's keys will be matched against. A default value, who's key is indicated by defaultKey, can be provided in the case that there is no match
+1. `matchClauses` *(Object)*: an object whose keys will be matched against. A default value, whose key is indicated by defaultKey, can be provided in the case that there is no match
 2. `testExpression` *(Object|boolean|number|string)*: a value that will be matched against the keys of matchClauses
 3. `[options={}]` *(Object)*: allow the user to set the defaultKey and matchAll case;
 4. `[options.defaultKey=_]` *(string)*: The key used for the default value in the matchClauses.
