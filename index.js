@@ -127,4 +127,3 @@ const match = ( matchClauses, testExpression, options = {} ) => {
 };
 
 export default match;
-

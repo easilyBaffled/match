@@ -1,9 +1,6 @@
 <h1 align="center" style="border-bottom: none;">
   Match
 </h1>
-<h1 align="center">
-  Match
-</h1>
 <p align="center">
     <img alt="match-by" src="media/match-by.svg" width="144">
 </p>
@@ -20,6 +17,9 @@
 <p align="center">
   Simple Matching for Mixed-Up Situations
 </p>
+
+---
+
 This module was made with affection for but in no way trying to be a pattern matcher. We've already got that [on the way](https://github.com/tc39/proposal-pattern-matching). Instead it is made to replace ugly ternary.
 It matches a test value to a simple key value. Simple in that the key must be a valid key in a object, so a primitive.
 
@@ -36,8 +36,6 @@ const traficLightDisplay = intersection === 'stop'
 ```
 becomes 
 ```javascript
-const intersectionSituation = 'stop';
-
 const lightOptions = {
 						stop: 'red',
 						yeild: 'yellow',
@@ -45,7 +43,7 @@ const lightOptions = {
 						_: 'yellow flashing'
 					};
 
-const traficLightDisplay = match( lightOptions, intersectionSituation );
+const traficLightDisplay = match( lightOptions, 'stop' );
 ```
 Though that situation could be cleared up with a mapper function. What a mapper couldn't cleanly handle for you would be something like 
 
@@ -79,7 +77,74 @@ const ViewType = ( { userCase } ) =>
 	} )    
 ```
 
-# Usage 
+
+# Usage
+```js
+match( {
+	'a': 1,
+	'b': 2
+}, 'a' );
+// => 1
+```
+
+Will return undefined if no match is found
+```javascript
+match( {
+	'a': 1,
+	'b': 2
+}, 'c' );
+// => undefined 
+```
+
+Will return a default value when no match is found if a default key/value is in the matchClauses
+```javascript
+match( {
+	'a': 1,
+	'b': 2,
+	_: 'default' // <- '_' is the default `defaultKey`
+}, 'c' );
+// => 'default' 
+```
+
+
+Match can be partially applied with just the matchClauses ahead of time.
+```js
+const requestStatus = match( {
+	200: 'success',
+	404: 'JSON not found',
+	_: 'Request Failed'
+} );
+
+const res = await fetch(jsonService)
+requestStatus( res.status )
+```
+
+
+If the matching value is a function, it will be called with the `testExpression`
+```javascript
+const getVectorLength = match( {
+		z: ( { x, y, z } ) => Math.sqrt(x ** 2 + y ** 2 + z ** 2),
+		y: ( { x, y } ) => Math.sqrt(x ** 2 + y ** 2 ),
+		_: vector => vector.length
+	} );
+getVectorLength({x: 1, y: 2, z: 3})
+// =>  3.74165
+```
+
+
+```javascript
+<Fetch lazy url="https://api.github.com/users/easilyBaffled">
+	{  // Fetch is a render prop that passes the fetch status (`{loading, data, error}`) to its child
+		match( {
+			data: ( { data } ) => <pre>{JSON.stringify(data, null, 2)}</pre>
+			loading: () => <h1>...Loading</h1>,
+			error: ({ error }) => <h1>{error.message}</h1>
+		} )
+	}
+</Fetch>
+```
+
+# API 
 
 <h3><code>match(matchClauses, testExpression, [options={}])</code></h3>
 [source](./index.js#L111 "View in source")
@@ -97,43 +162,3 @@ The value may also be an object in which case, the keys in the object, whose val
 
 #### Returns
 *(undefined|&#42;): Returns undefined if there is no match, otherwise returns the matching value(s)*
-
-#### Example
-```js
-const matchClauses = {
-  a: 1,
-  b: 2,
-  _: 'default' // <- '_' is the default `defaultKey`
-};
-
-match( matchClauses, 'a' )
-// => 1
-
-match( matchClauses, 'c' )
-// => 'default'
-
-
-
-
-// If the matching value is a function, it will be called with the `testExpression`
-const matching = match( {
-    function: matchFunction,
-    object: matchObject,
-    _: v => v
-}, typeof 0 )
-// => 'number'
-
-
-
-
-// Match can be partially applied with just the matchClauses ahead of time.
-<Fetch lazy url="https://api.github.com/users/easilyBaffled">
-     {  // Fetch is a render prop that passes the fetch status (`{loading, data, error}`) to its child
-      match( {
-          data: ( { data } ) => <pre>{JSON.stringify(data, null, 2)}</pre>
-          loading: () => <h1>...Loading</h1>,
-          error: ({ error }) => <h1>{error.message}</h1>
-      } )
-  }
-</Fetch>
-```
