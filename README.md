@@ -24,7 +24,7 @@ This module was made with affection for but in no way trying to be a pattern mat
 It matches a test value to a simple key value. Simple in that the key must be a valid key in a object, so a primitive.
 
 
-For example 
+## Motivating Examples 
 ```javascript
 const traficLightDisplay = intersection === 'stop'
 							? 'red'
@@ -78,7 +78,7 @@ const ViewType = ( { userCase } ) =>
 ```
 
 
-# Usage
+## Usage
 ```js
 match( {
 	'a': 1,
@@ -144,7 +144,7 @@ getVectorLength({x: 1, y: 2, z: 3})
 </Fetch>
 ```
 
-# API 
+## API 
 
 <h3><code>match(matchClauses, testExpression, [options={}])</code></h3>
 [source](./index.js#L111 "View in source")
