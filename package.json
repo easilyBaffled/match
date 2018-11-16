@@ -38,7 +38,7 @@
 		"babel-jest": "^23.6.0",
 		"coveralls": "^3.0.2",
 		"jest": "^23.6.0",
-		"regenerator-runtime": "^0.12.1",
+		"regenerator-runtime": "^0.13.0",
 		"rimraf": "^2.6.2",
 		"testcheck": "^1.0.0-rc.2"
 	}
