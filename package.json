@@ -1,6 +1,6 @@
 {
 	"name": "match-by",
-	"version": "0.3.0",
+	"version": "0.4.0",
 	"description": "Somewhere between pattern matching and a ternary",
 	"license": "MIT",
 	"repository": "easilyBaffled/match",
@@ -12,7 +12,7 @@
 		"node": ">=6"
 	},
 	"scripts": {
-	  	"build": "babel index.js -d dist",
+		"build": "babel index.js -d dist",
 		"test": "jest --coverage --coverageReporters=text-lcov | coveralls",
 		"test:6": "npx --package=node-bin@6 -- npm test",
 		"test:lts": "npx --package=node-bin@lts -- npm test",
