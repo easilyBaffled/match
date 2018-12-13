@@ -1,6 +1,6 @@
 {
 	"name": "match-by",
-	"version": "0.5.0",
+	"version": "0.5.1",
 	"description": "Somewhere between pattern matching and a ternary",
 	"license": "MIT",
 	"repository": "easilyBaffled/match",
@@ -25,7 +25,7 @@
 		"major": "npm version major && npm publish",
 		"postpublish": "git push origin master --follow-tags"
 	},
-  	"main": "dist/index.js",
+	"main": "dist/index.js",
 	"files": [
 		"dist/index.js"
 	],
