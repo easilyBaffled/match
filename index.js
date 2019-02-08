@@ -147,4 +147,13 @@ const match = ( matchClauses, testExpression, options = {} ) => {
         : result;
 };
 
+const _makeEvaluators = (evaluators, target) => 
+    Object.entries(evaluators)
+        .reduce((acc, [name,evalFunc] ) => (acc, evalFunc, name) => ({ ...acc, [name]: evalFunc(target) }), {} )
+
+export const makeEvaluators = ( evaluators, target ) => {
+    if (!target) return _target => _makeEvaluators(evaluators, _target )
+    return _makeEvaluators(evaluators, target)
+}
+
 export default match;
