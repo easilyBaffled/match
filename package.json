@@ -20,9 +20,9 @@
 		"test:watch": "jest --watch",
 		"test:coverage": "jest --coverage",
 		"postcoveralls": "rimraf ./coverage",
-		"patch": "npm build && npm version patch && npm publish",
-		"minor": "npm build && npm version minor && npm publish",
-		"major": "npm build && npm version major && npm publish",
+		"patch": "npm run build && npm version patch && npm publish",
+		"minor": "npm run build && npm version minor && npm publish",
+		"major": "npm run build && npm version major && npm publish",
 		"postpublish": "git push origin master --follow-tags"
 	},
 	"main": "dist/index.js",
@@ -34,7 +34,8 @@
 	],
 	"dependencies": {},
 	"devDependencies": {
-		"@babel/core": "^7.1.2",
+		"@babel/cli": "^7.2.3",
+		"@babel/core": "^7.2.2",
 		"@babel/preset-env": "^7.1.0",
 		"babel-core": "^7.0.0-bridge.0",
 		"babel-jest": "^23.6.0",
