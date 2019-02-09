@@ -3,7 +3,19 @@
 Object.defineProperty(exports, "__esModule", {
   value: true
 });
-exports.default = exports.getMatchedValues = exports.extractMatchingKeys = void 0;
+exports.default = exports.makeEvaluators = exports.getMatchedValues = exports.extractMatchingKeys = void 0;
+
+function _objectSpread(target) { for (var i = 1; i < arguments.length; i++) { var source = arguments[i] != null ? arguments[i] : {}; var ownKeys = Object.keys(source); if (typeof Object.getOwnPropertySymbols === 'function') { ownKeys = ownKeys.concat(Object.getOwnPropertySymbols(source).filter(function (sym) { return Object.getOwnPropertyDescriptor(source, sym).enumerable; })); } ownKeys.forEach(function (key) { _defineProperty(target, key, source[key]); }); } return target; }
+
+function _defineProperty(obj, key, value) { if (key in obj) { Object.defineProperty(obj, key, { value: value, enumerable: true, configurable: true, writable: true }); } else { obj[key] = value; } return obj; }
+
+function _slicedToArray(arr, i) { return _arrayWithHoles(arr) || _iterableToArrayLimit(arr, i) || _nonIterableRest(); }
+
+function _nonIterableRest() { throw new TypeError("Invalid attempt to destructure non-iterable instance"); }
+
+function _iterableToArrayLimit(arr, i) { var _arr = []; var _n = true; var _d = false; var _e = undefined; try { for (var _i = arr[Symbol.iterator](), _s; !(_n = (_s = _i.next()).done); _n = true) { _arr.push(_s.value); if (i && _arr.length === i) break; } } catch (err) { _d = true; _e = err; } finally { try { if (!_n && _i["return"] != null) _i["return"](); } finally { if (_d) throw _e; } } return _arr; }
+
+function _arrayWithHoles(arr) { if (Array.isArray(arr)) return arr; }
 
 function _toConsumableArray(arr) { return _arrayWithoutHoles(arr) || _iterableToArray(arr) || _nonIterableSpread(); }
 
@@ -43,7 +55,7 @@ function isObject(value) {
 
 var pullKeyWithTruthyValue = function pullKeyWithTruthyValue(testExpression) {
   return function (acc, key) {
-    return testExpression[key] ? _toConsumableArray(acc).concat([key]) : acc;
+    return testExpression[key] ? [].concat(_toConsumableArray(acc), [key]) : acc;
   };
 };
 /**
@@ -70,7 +82,7 @@ exports.extractMatchingKeys = extractMatchingKeys;
 
 var pickMatchingValues = function pickMatchingValues(matchClauses) {
   return function (matches, key) {
-    return matchClauses[key] === undefined ? matches : _toConsumableArray(matches).concat([matchClauses[key]]);
+    return matchClauses[key] === undefined ? matches : [].concat(_toConsumableArray(matches), [matchClauses[key]]);
   };
 }; // Use spread instead of `.concat`, because `.concat` will flatten an array found with matchClauses[ key ]
 
@@ -88,7 +100,7 @@ var pickAllOrOne = function pickAllOrOne(matchAll) {
     var index = arguments.length > 2 ? arguments[2] : undefined;
     var arr = arguments.length > 3 ? arguments[3] : undefined;
     return (// There is no clean way to break out of a reduce. So it has to loop through the whole thing to produce the result
-      matchAll ? _toConsumableArray(results).concat([value]) : arr[0]
+      matchAll ? [].concat(_toConsumableArray(results), [value]) : arr[0]
     );
   };
 };
@@ -104,7 +116,7 @@ var pickAllOrOne = function pickAllOrOne(matchAll) {
 
 var getMatchedValues = function getMatchedValues(matchingKeys, matchClauses, defaultKey) {
   var matchAll = arguments.length > 3 && arguments[3] !== undefined ? arguments[3] : false;
-  return _toConsumableArray(Array.isArray(matchingKeys) ? matchingKeys : [matchingKeys]).concat([defaultKey]).reduce(pickMatchingValues(matchClauses), []) // Pick out all of the values in matchClauses that have a matching key and is not undefined
+  return [].concat(_toConsumableArray(Array.isArray(matchingKeys) ? matchingKeys : [matchingKeys]), [defaultKey]).reduce(pickMatchingValues(matchClauses), []) // Pick out all of the values in matchClauses that have a matching key and is not undefined
   .reduce(pickAllOrOne(matchAll), undefined);
 }; // If the array is empty it means there were no matches and the function should return `undefined`, so undefined needs to be explicitly set here.
 
@@ -176,5 +188,23 @@ var match = function match(matchClauses, testExpression) {
   return typeof result === 'function' ? result(testExpression) : result;
 };
 
+var _makeEvaluators = function _makeEvaluators(evaluators, target) {
+  return Object.entries(evaluators).reduce(function (acc, _ref) {
+    var _ref2 = _slicedToArray(_ref, 2),
+        name = _ref2[0],
+        evalFunc = _ref2[1];
+
+    return _objectSpread({}, acc, _defineProperty({}, name, evalFunc(target)));
+  }, {});
+};
+
+var makeEvaluators = function makeEvaluators(evaluators, target) {
+  if (!target) return function (_target) {
+    return _makeEvaluators(evaluators, _target);
+  };
+  return _makeEvaluators(evaluators, target);
+};
+
+exports.makeEvaluators = makeEvaluators;
 var _default = match;
 exports.default = _default;
