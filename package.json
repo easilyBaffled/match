@@ -20,9 +20,9 @@
 		"test:watch": "jest --watch",
 		"test:coverage": "jest --coverage",
 		"postcoveralls": "rimraf ./coverage",
-		"patch": "npm version patch && npm publish",
-		"minor": "npm version minor && npm publish",
-		"major": "npm version major && npm publish",
+		"patch": "npm build && npm version patch && npm publish",
+		"minor": "npm build && npm version minor && npm publish",
+		"major": "npm build && npm version major && npm publish",
 		"postpublish": "git push origin master --follow-tags"
 	},
 	"main": "dist/index.js",
